@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="favicon/icons8-filmadora-profissional-96.png" type="image/x-icon">
+<title>Projeto Multimídia</title>
+<style>
+  #video-player {
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  video {
+    width: 100%;
+  }
+  body{
+    background-color: rgb(33, 32, 32);
+  }
+</style>
+</head>
+<body>
+<div id="video-player">
+  <video id="video" controls>
+    <source src="videos/video1.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos HTML5.
+  </video>
+  <br>
+  <button onclick="playPause()">Play/Pause</button>
+  <button onclick="mutadoDesmutado()">Mute/Unmute</button>
+  <input type="range" id="volume" min="0" max="1" step="0.1" value="1" onchange="alterarVolume()">
+  <br>
+  <input type="range" id="seek-bar" value="0" step="any" onchange="alterarTempo()">
+  <br>
+  <button onclick="mudarVideo('videos/video1.MP4')">Vídeo 1</button>
+  <button onclick="mudarVideo('videos/video2.mp4')">Vídeo 2</button>
+</div>
+
+<script>
+  var video = document.getElementById('video');
+  var barraDeVolume = document.getElementById('volume');
+  var barraDeProgresso = document.getElementById('seek-bar');
+
+  function playPause() {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  }
+
+  function mutadoDesmutado() {
+    if (video.muted) {
+      video.muted = false;
+      barraDeVolume.value = video.volume;
+    } else {
+      video.muted = true;
+      barraDeVolume.value = 0;
+    }
+  }
+
+  function alterarVolume() {
+    video.volume = barraDeVolume.value;
+    video.muted = false;
+  }
+
+  function alterarTempo() {
+    var seekTo = video.duration * (barraDeProgresso.value / 100);
+    video.currentTime = seekTo;
+  }
+
+  function atualizarBarraDeProgresso() {
+    var percentage = (video.currentTime / video.duration) * 100;
+    barraDeProgresso.value = percentage;
+  }
+
+  function mudarVideo(source) {
+    video.src = source;
+    video.play();
+  }
+
+  video.addEventListener('timeupdate', atualizarBarraDeProgresso);
+</script>
+</body>
+</html>
